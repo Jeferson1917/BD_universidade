@@ -1,0 +1,41 @@
+@model ComandoExecutado
+@*
+    Mostra o comando SQL que foi enviado ao banco, os parâmetros e o resultado.
+*@
+<div class="card mb-4 border-@(Model.Sucesso ? "success" : "danger")">
+    <div class="card-header d-flex justify-content-between @(Model.Sucesso ? "bg-success-subtle" : "bg-danger-subtle")">
+        <strong>SQL executado</strong>
+        <span class="text-muted small">@Model.Momento.ToString("HH:mm:ss")</span>
+    </div>
+    <div class="card-body">
+        <pre class="sql mb-3">@Model.Sql</pre>
+
+        @if (Model.Parametros.Count > 0)
+        {
+            <table class="table table-sm table-bordered w-auto mb-3">
+                <thead><tr><th>Parâmetro</th><th>Valor</th></tr></thead>
+                <tbody>
+                    @foreach (var p in Model.Parametros)
+                    {
+                        <tr><td><code>@p.Nome</code></td><td><code>@p.Valor</code></td></tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        @if (Model.Sucesso)
+        {
+            <p class="mb-0"><strong>Linhas afetadas:</strong> @Model.LinhasAfetadas</p>
+        }
+        else
+        {
+            <p class="mb-1 text-danger"><strong>Erro:</strong> @Model.Erro</p>
+            <p class="mb-0 small text-muted">Mensagem do PostgreSQL: @Model.ErroOriginal</p>
+        }
+
+        @if (Model.Observacao is not null)
+        {
+            <div class="alert alert-info mt-3 mb-0">@Model.Observacao</div>
+        }
+    </div>
+</div>
