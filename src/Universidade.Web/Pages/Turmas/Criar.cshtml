@@ -1,0 +1,32 @@
+@page
+@model Universidade.Web.Pages.Turmas.CriarModel
+@{
+    ViewData["Title"] = "Nova turma";
+}
+
+<h1 class="mb-3">Nova turma</h1>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_SqlPanel" model="Model.UltimoComando" />
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+    <partial name="_CamposTurma" for="Form" view-data="ViewData" />
+
+    <p class="text-muted small mt-3">
+        O <code>id_turma</code> não é digitado: o valor padrão da coluna é
+        <code>nextval('universidade.seq_turma')</code>.
+    </p>
+
+    <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Inserir</button>
+        <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

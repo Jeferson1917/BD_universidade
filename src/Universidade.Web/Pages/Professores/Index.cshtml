@@ -1,0 +1,81 @@
+@page
+@model Universidade.Web.Pages.Professores.IndexModel
+@{
+    ViewData["Title"] = "Professores";
+    var moeda = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Professores</h1>
+    <a class="btn btn-primary" asp-page="Criar">+ Novo professor</a>
+</div>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_SqlPanel" model="Model.UltimoComando" />
+}
+
+<form method="get" class="d-flex gap-2 mb-3">
+    <input class="form-control" name="busca" value="@Model.Busca" placeholder="Buscar por matrícula, nome ou departamento" />
+    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+    @if (!string.IsNullOrEmpty(Model.Busca))
+    {
+        <a class="btn btn-outline-secondary" asp-page="Index">Limpar</a>
+    }
+</form>
+
+<details class="mb-3">
+    <summary class="text-muted">Consulta usada nesta listagem</summary>
+    <pre class="sql mt-2">@ProfessorRepository.SqlListar</pre>
+    <p class="small text-muted">
+        <code>@@busca</code> = @(string.IsNullOrWhiteSpace(Model.Busca) ? "NULL" : $"'%{Model.Busca.Trim()}%'")
+    </p>
+</details>
+
+<p class="text-muted">@Model.Professores.Count registro(s)</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Matrícula</th>
+                <th>Nome (usuário)</th>
+                <th>CPF</th>
+                <th>Depto.</th>
+                <th>Formação</th>
+                <th>Admissão</th>
+                <th>Jornada</th>
+                <th class="text-end">Salário</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Professores)
+            {
+                <tr class="@(p.MatProfessor == Model.Destaque ? "destaque" : "")">
+                    <td><code>@p.MatProfessor</code></td>
+                    <td>@(p.NomeUsuario ?? "—")</td>
+                    <td>
+                        @if (p.CpfFormatado is null)
+                        {
+                            <span class="badge text-bg-secondary">NULL</span>
+                        }
+                        else
+                        {
+                            <code>@p.CpfFormatado</code>
+                        }
+                    </td>
+                    <td title="@p.NomeDepartamento">@p.Departamento</td>
+                    <td>@p.Formacao</td>
+                    <td>@p.DataAdmissao?.ToString("dd/MM/yyyy")</td>
+                    <td>@p.TipoJornada</td>
+                    <td class="text-end">@p.Salario?.ToString("C", moeda)</td>
+                    <td class="text-nowrap">
+                        <a class="btn btn-sm btn-outline-primary" asp-page="Editar" asp-route-mat="@p.MatProfessor">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-page="Excluir" asp-route-mat="@p.MatProfessor">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

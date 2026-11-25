@@ -1,0 +1,29 @@
+@page "{idTurma:int}/{mat}"
+@model Universidade.Web.Pages.Leciona.ExcluirModel
+@{
+    ViewData["Title"] = "Excluir associação";
+    var l = Model.Registro!;
+}
+
+<h1 class="mb-3">Excluir associação</h1>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Turma</dt>
+            <dd class="col-sm-9"><code>@l.IdTurma</code> — <code>@l.CodDisc</code> @l.NomeDisciplina (@l.SemestreTexto)</dd>
+            <dt class="col-sm-3">Professor</dt>
+            <dd class="col-sm-9"><code>@l.MatProfessor</code> — @(l.NomeProfessor ?? "—")</dd>
+        </dl>
+    </div>
+</div>
+
+<p class="text-muted">Só a associação é removida; a turma e o professor continuam existindo.</p>
+
+<pre class="sql">DELETE FROM universidade.leciona
+WHERE id_turma = @l.IdTurma AND mat_professor = '@l.MatProfessor'</pre>
+
+<form method="post" class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+</form>

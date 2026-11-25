@@ -1,0 +1,68 @@
+@page
+@model Universidade.Web.Pages.Leciona.IndexModel
+@{
+    ViewData["Title"] = "Leciona";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="mb-0">Leciona</h1>
+        <p class="text-muted mb-0">Associação entre professores e turmas</p>
+    </div>
+    <a class="btn btn-primary" asp-page="Criar">+ Nova associação</a>
+</div>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_SqlPanel" model="Model.UltimoComando" />
+}
+
+<form method="get" class="d-flex gap-2 mb-3">
+    <input class="form-control" name="busca" value="@Model.Busca" placeholder="Buscar por professor ou disciplina" />
+    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+    @if (!string.IsNullOrEmpty(Model.Busca))
+    {
+        <a class="btn btn-outline-secondary" asp-page="Index">Limpar</a>
+    }
+</form>
+
+<details class="mb-3">
+    <summary class="text-muted">Consulta usada nesta listagem</summary>
+    <pre class="sql mt-2">@LecionaRepository.SqlListar</pre>
+    <p class="small text-muted">
+        <code>@@busca</code> = @(string.IsNullOrWhiteSpace(Model.Busca) ? "NULL" : $"'%{Model.Busca.Trim()}%'")
+    </p>
+</details>
+
+<p class="text-muted">@Model.Registros.Count registro(s)</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>id_turma</th>
+                <th>Disciplina</th>
+                <th>Turma / Semestre</th>
+                <th>mat_professor</th>
+                <th>Professor</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var l in Model.Registros)
+            {
+                <tr class="@(l.Chave == Model.Destaque ? "destaque" : "")">
+                    <td><code>@l.IdTurma</code></td>
+                    <td><code>@l.CodDisc</code> @l.NomeDisciplina</td>
+                    <td>@l.Numero @(l.SemestreTexto is null ? "" : $"— {l.SemestreTexto}")</td>
+                    <td><code>@l.MatProfessor</code></td>
+                    <td>@(l.NomeProfessor ?? "—")</td>
+                    <td class="text-nowrap">
+                        <a class="btn btn-sm btn-outline-primary" asp-page="Editar" asp-route-idTurma="@l.IdTurma" asp-route-mat="@l.MatProfessor">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-page="Excluir" asp-route-idTurma="@l.IdTurma" asp-route-mat="@l.MatProfessor">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

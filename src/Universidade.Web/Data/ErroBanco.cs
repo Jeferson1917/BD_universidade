@@ -14,10 +14,15 @@ public static class ErroBanco
         {
             "pk_usuario" => "Já existe um usuário com esse CPF.",
             "usuario_login_key" => "Esse login já está em uso por outro usuário.",
+            "pk_professor" => "Já existe um professor com essa matrícula.",
+            "professor_cpf_key" => "Esse usuário já está vinculado a outro professor.",
+            "uq_turma" => "Já existe uma turma dessa disciplina com esse número no mesmo ano/semestre.",
+            "pk_leciona" => "Esse professor já está associado a essa turma.",
+            "pk_semestre" => "Esse semestre já está cadastrado.",
             _ => $"Valor duplicado (restrição {ex.ConstraintName})."
         },
         // foreign_key_violation
-        "23503" => $"Violação de chave estrangeira ({ex.ConstraintName}): {ex.Detail}",
+        "23503" => $"Violação de chave estrangeira ({ex.ConstraintName}).",
         // not_null_violation
         "23502" => $"O campo '{ex.ColumnName}' é obrigatório.",
         // check_violation

@@ -2,17 +2,31 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Início";
+    var tabelas = new[]
+    {
+        ("/Usuarios/Index", "Usuários", "universidade.usuario"),
+        ("/Professores/Index", "Professores", "universidade.professor"),
+        ("/Turmas/Index", "Turmas", "universidade.turma"),
+        ("/Leciona/Index", "Leciona", "universidade.leciona"),
+    };
 }
 
 <h1 class="mb-4">CRUD — esquema universidade</h1>
 
-<div class="row g-3">
-    <div class="col-sm-6 col-lg-3">
-        <a class="card h-100 text-decoration-none" asp-page="/Usuarios/Index">
-            <div class="card-body">
-                <h5 class="card-title">Usuários</h5>
-                <p class="card-text text-muted">universidade.usuario</p>
-            </div>
-        </a>
-    </div>
+<div class="row g-3 mb-4">
+    @foreach (var (pagina, titulo, tabela) in tabelas)
+    {
+        <div class="col-sm-6 col-lg-3">
+            <a class="card h-100 text-decoration-none" asp-page="@pagina">
+                <div class="card-body">
+                    <h5 class="card-title">@titulo</h5>
+                    <p class="card-text text-muted"><code>@tabela</code></p>
+                </div>
+            </a>
+        </div>
+    }
 </div>
+
+<p class="text-muted">
+    Apoio: <a asp-page="/Semestres/Index">Semestres</a> (necessário para cadastrar turmas em semestres novos).
+</p>

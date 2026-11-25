@@ -1,0 +1,32 @@
+@page "{mat}"
+@model Universidade.Web.Pages.Professores.EditarModel
+@{
+    ViewData["Title"] = "Editar professor";
+}
+
+<h1 class="mb-3">Editar professor <code>@Model.Mat</code></h1>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_SqlPanel" model="Model.UltimoComando" />
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+    <partial name="_CamposProfessor" for="Form" view-data="ViewData" />
+
+    <p class="text-muted small mt-3">
+        Alterar a matrícula muda a chave primária. leciona, departamento.chefe e plano referenciam a matrícula com
+        <code>ON UPDATE CASCADE</code>, então o novo valor é propagado automaticamente.
+    </p>
+
+    <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

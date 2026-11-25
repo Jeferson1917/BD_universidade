@@ -23,10 +23,42 @@ public class Db(NpgsqlDataSource dataSource)
         }
         catch (PostgresException ex)
         {
-            registro.Erro = ErroBanco.Traduzir(ex);
-            registro.ErroOriginal = $"{ex.SqlState}: {ex.MessageText}";
+            RegistrarErro(registro, ex);
         }
         return registro;
+    }
+
+    /// <summary>
+    /// Executa um comando com RETURNING (ex.: INSERT que devolve o id gerado pela sequência).
+    /// </summary>
+    public async Task<(ComandoExecutado Comando, T? Retorno)> ExecutarComRetornoAsync<T>(string sql, params NpgsqlParameter[] parametros)
+    {
+        var registro = ComandoExecutado.De(sql, parametros);
+        T? retorno = default;
+        try
+        {
+            await using var cmd = dataSource.CreateCommand(sql);
+            cmd.Parameters.AddRange(parametros);
+            var valor = await cmd.ExecuteScalarAsync();
+            if (valor is not null and not DBNull)
+            {
+                var tipo = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+                retorno = (T)Convert.ChangeType(valor, tipo);
+                registro.LinhasAfetadas = 1;
+            }
+        }
+        catch (PostgresException ex)
+        {
+            RegistrarErro(registro, ex);
+        }
+        return (registro, retorno);
+    }
+
+    private static void RegistrarErro(ComandoExecutado registro, PostgresException ex)
+    {
+        registro.Erro = ErroBanco.Traduzir(ex);
+        registro.CodigoErro = ex.SqlState;
+        registro.ErroOriginal = $"{ex.SqlState}: {ex.MessageText}";
     }
 
     /// <summary>Executa um SELECT e converte cada linha com <paramref name="mapear"/>.</summary>

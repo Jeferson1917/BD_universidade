@@ -1,0 +1,51 @@
+@page "{id:int}"
+@model Universidade.Web.Pages.Turmas.ExcluirModel
+@{
+    ViewData["Title"] = "Excluir turma";
+    var t = Model.Turma!;
+    var d = Model.Dependentes!;
+}
+
+<h1 class="mb-3">Excluir turma</h1>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">ID</dt>
+            <dd class="col-sm-9"><code>@t.IdTurma</code></dd>
+            <dt class="col-sm-3">Disciplina</dt>
+            <dd class="col-sm-9"><code>@t.CodDisc</code> @t.NomeDisciplina</dd>
+            <dt class="col-sm-3">Número</dt>
+            <dd class="col-sm-9">@t.Numero</dd>
+            <dt class="col-sm-3">Semestre</dt>
+            <dd class="col-sm-9">@t.SemestreTexto</dd>
+            <dt class="col-sm-3">Professores</dt>
+            <dd class="col-sm-9">@(t.Professores ?? "—")</dd>
+        </dl>
+    </div>
+</div>
+
+@if (d.Algum)
+{
+    <div class="alert alert-warning">
+        <strong>Efeitos desta exclusão no banco (<code>ON DELETE CASCADE</code>):</strong>
+        <ul class="mb-0">
+            @if (d.Professores > 0)
+            {
+                <li>@d.Professores registro(s) em <code>leciona</code> serão apagados.</li>
+            }
+            @if (d.Alunos > 0)
+            {
+                <li>@d.Alunos matrícula(s) de alunos em <code>cursa</code> (com as notas) serão apagadas.</li>
+            }
+        </ul>
+    </div>
+}
+
+<pre class="sql">DELETE FROM universidade.turma
+WHERE id_turma = @t.IdTurma</pre>
+
+<form method="post" class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+</form>

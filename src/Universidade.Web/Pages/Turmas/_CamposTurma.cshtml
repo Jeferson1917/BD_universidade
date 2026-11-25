@@ -1,0 +1,29 @@
+@model TurmaForm
+@{
+    var disciplinas = (List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewData["Disciplinas"]!;
+    var semestres = (List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewData["Semestres"]!;
+}
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="CodDisc" class="form-label"></label>
+        <select asp-for="CodDisc" asp-items="disciplinas" class="form-select">
+            <option value="">(escolha)</option>
+        </select>
+        <span asp-validation-for="CodDisc" class="text-danger small"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Numero" class="form-label"></label>
+        <input asp-for="Numero" class="form-control" type="number" min="1" />
+        <span asp-validation-for="Numero" class="text-danger small"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Semestre" class="form-label"></label>
+        <select asp-for="Semestre" asp-items="semestres" class="form-select">
+            <option value="">(nenhum)</option>
+        </select>
+        <div class="form-text">
+            Não achou? <a asp-page="/Semestres/Criar">Cadastre o semestre</a>.
+        </div>
+    </div>
+</div>

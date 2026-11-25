@@ -1,0 +1,32 @@
+@page "{idTurma:int}/{mat}"
+@model Universidade.Web.Pages.Leciona.EditarModel
+@{
+    ViewData["Title"] = "Editar associação";
+}
+
+<h1 class="mb-3">Editar associação <code>(@Model.IdTurma, @Model.Mat)</code></h1>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_SqlPanel" model="Model.UltimoComando" />
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+    <partial name="_CamposLeciona" for="Form" view-data="ViewData" />
+
+    <p class="text-muted small mt-3">
+        leciona só tem a chave primária composta <code>(id_turma, mat_professor)</code>:
+        editar significa trocar a turma e/ou o professor da associação.
+    </p>
+
+    <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

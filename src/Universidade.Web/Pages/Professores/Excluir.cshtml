@@ -1,0 +1,54 @@
+@page "{mat}"
+@model Universidade.Web.Pages.Professores.ExcluirModel
+@{
+    ViewData["Title"] = "Excluir professor";
+    var p = Model.Professor!;
+    var d = Model.Dependentes!;
+}
+
+<h1 class="mb-3">Excluir professor</h1>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Matrícula</dt>
+            <dd class="col-sm-9"><code>@p.MatProfessor</code></dd>
+            <dt class="col-sm-3">Nome (usuário)</dt>
+            <dd class="col-sm-9">@(p.NomeUsuario ?? "—")</dd>
+            <dt class="col-sm-3">Departamento</dt>
+            <dd class="col-sm-9">@p.Departamento @(p.NomeDepartamento is null ? "" : $"— {p.NomeDepartamento}")</dd>
+            <dt class="col-sm-3">Formação / Jornada</dt>
+            <dd class="col-sm-9">@p.Formacao / @p.TipoJornada</dd>
+        </dl>
+    </div>
+</div>
+
+@if (d.Algum)
+{
+    <div class="alert alert-warning">
+        <strong>Efeitos desta exclusão no banco:</strong>
+        <ul class="mb-0">
+            @if (d.Turmas > 0)
+            {
+                <li>@d.Turmas registro(s) em <code>leciona</code> serão apagados (<code>ON DELETE CASCADE</code>).</li>
+            }
+            @if (d.ChefeDe is not null)
+            {
+                <li>É chefe de <code>@d.ChefeDe</code>: o departamento ficará com <code>chefe = NULL</code> (<code>ON DELETE SET NULL</code>).</li>
+            }
+            @if (d.Planos > 0)
+            {
+                <li>@d.Planos plano(s) ficarão com <code>mat_professor = NULL</code> (<code>ON DELETE SET NULL</code>).</li>
+            }
+        </ul>
+        <div class="small mt-2">O usuário (dados pessoais) não é apagado.</div>
+    </div>
+}
+
+<pre class="sql">DELETE FROM universidade.professor
+WHERE mat_professor = '@p.MatProfessor'</pre>
+
+<form method="post" class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+</form>

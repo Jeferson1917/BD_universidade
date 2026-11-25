@@ -1,5 +1,10 @@
+using System.Globalization;
 using Npgsql;
 using Universidade.Web.Data;
+
+// Cultura invariante: números decimais com ponto (ex.: salário 2500.50) nos formulários
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +16,12 @@ if (string.IsNullOrWhiteSpace(connectionString))
 
 builder.Services.AddSingleton(NpgsqlDataSource.Create(connectionString));
 builder.Services.AddSingleton<Db>();
+builder.Services.AddSingleton<OpcoesRepository>();
 builder.Services.AddSingleton<UsuarioRepository>();
+builder.Services.AddSingleton<ProfessorRepository>();
+builder.Services.AddSingleton<TurmaRepository>();
+builder.Services.AddSingleton<LecionaRepository>();
+builder.Services.AddSingleton<SemestreRepository>();
 
 builder.Services.AddRazorPages();
 

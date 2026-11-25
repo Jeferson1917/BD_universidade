@@ -1,0 +1,22 @@
+@model LecionaForm
+@{
+    var turmas = (List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewData["Turmas"]!;
+    var professores = (List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewData["Professores"]!;
+}
+
+<div class="row g-3">
+    <div class="col-md-7">
+        <label asp-for="IdTurma" class="form-label"></label>
+        <select asp-for="IdTurma" asp-items="turmas" class="form-select">
+            <option value="">(escolha)</option>
+        </select>
+        <span asp-validation-for="IdTurma" class="text-danger small"></span>
+    </div>
+    <div class="col-md-5">
+        <label asp-for="MatProfessor" class="form-label"></label>
+        <select asp-for="MatProfessor" asp-items="professores" class="form-select">
+            <option value="">(escolha)</option>
+        </select>
+        <span asp-validation-for="MatProfessor" class="text-danger small"></span>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+@page
+@model Universidade.Web.Pages.Semestres.CriarModel
+@{
+    ViewData["Title"] = "Novo semestre";
+}
+
+<h1 class="mb-3">Novo semestre</h1>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_SqlPanel" model="Model.UltimoComando" />
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+    <partial name="_CamposSemestre" for="Form" />
+
+    <div class="mt-4 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Inserir</button>
+        <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

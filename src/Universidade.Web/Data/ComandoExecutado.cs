@@ -14,6 +14,7 @@ public class ComandoExecutado
     public List<ParametroExibido> Parametros { get; set; } = [];
     public int LinhasAfetadas { get; set; }
     public string? Erro { get; set; }
+    public string? CodigoErro { get; set; }
     public string? ErroOriginal { get; set; }
     public string? Observacao { get; set; }
     public DateTime Momento { get; set; } = DateTime.Now;

@@ -1,0 +1,32 @@
+@page "{ano:int}/{semestre:int}"
+@model Universidade.Web.Pages.Semestres.EditarModel
+@{
+    ViewData["Title"] = "Editar semestre";
+}
+
+<h1 class="mb-3">Editar semestre <code>@Model.Ano/@Model.Semestre</code></h1>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_SqlPanel" model="Model.UltimoComando" />
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+    <partial name="_CamposSemestre" for="Form" />
+
+    <p class="text-muted small mt-3">
+        Alterar ano/semestre muda a chave primária. turma referencia o semestre com
+        <code>ON UPDATE CASCADE</code>, então as turmas acompanham a mudança.
+    </p>
+
+    <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

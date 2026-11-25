@@ -1,0 +1,22 @@
+@model SemestreForm
+
+<div class="row g-3">
+    <div class="col-md-3">
+        <label asp-for="Ano" class="form-label"></label>
+        <input asp-for="Ano" class="form-control" type="number" />
+        <span asp-validation-for="Ano" class="text-danger small"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Periodo" class="form-label"></label>
+        <input asp-for="Periodo" class="form-control" type="number" min="1" />
+        <span asp-validation-for="Periodo" class="text-danger small"></span>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="DataInicio" class="form-label"></label>
+        <input asp-for="DataInicio" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="DataFim" class="form-label"></label>
+        <input asp-for="DataFim" class="form-control" />
+    </div>
+</div>

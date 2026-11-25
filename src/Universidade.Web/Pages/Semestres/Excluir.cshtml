@@ -1,0 +1,38 @@
+@page "{ano:int}/{semestre:int}"
+@model Universidade.Web.Pages.Semestres.ExcluirModel
+@{
+    ViewData["Title"] = "Excluir semestre";
+    var s = Model.Registro!;
+}
+
+<h1 class="mb-3">Excluir semestre <code>@s.Ano/@s.Periodo</code></h1>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Início</dt>
+            <dd class="col-sm-9">@(s.DataInicio?.ToString("dd/MM/yyyy") ?? "—")</dd>
+            <dt class="col-sm-3">Fim</dt>
+            <dd class="col-sm-9">@(s.DataFim?.ToString("dd/MM/yyyy") ?? "—")</dd>
+            <dt class="col-sm-3">Turmas</dt>
+            <dd class="col-sm-9">@s.Turmas</dd>
+        </dl>
+    </div>
+</div>
+
+@if (s.Turmas > 0)
+{
+    <div class="alert alert-warning">
+        Existem <strong>@s.Turmas turma(s)</strong> nesse semestre. A chave estrangeira <code>fk_semestre</code>
+        é <code>ON DELETE NO ACTION</code>, então o banco vai <strong>recusar</strong> esta exclusão.
+        Você pode confirmar mesmo assim para ver o erro.
+    </div>
+}
+
+<pre class="sql">DELETE FROM universidade.semestre
+WHERE ano = @s.Ano AND semestre = @s.Periodo</pre>
+
+<form method="post" class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+</form>
