@@ -1,0 +1,41 @@
+@model UsuarioForm
+@{
+    var edicao = ViewData["Edicao"] is true;
+}
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <label asp-for="Cpf" class="form-label"></label>
+        <input asp-for="Cpf" class="form-control" inputmode="numeric" placeholder="11 dígitos" readonly="@edicao" />
+        <span asp-validation-for="Cpf" class="text-danger small"></span>
+    </div>
+    <div class="col-md-8">
+        <label asp-for="Nome" class="form-label"></label>
+        <input asp-for="Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger small"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="DataNascimento" class="form-label"></label>
+        <input asp-for="DataNascimento" class="form-control" />
+        <span asp-validation-for="DataNascimento" class="text-danger small"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Login" class="form-label"></label>
+        <input asp-for="Login" class="form-control" />
+        <span asp-validation-for="Login" class="text-danger small"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Senha" class="form-label"></label>
+        <input asp-for="Senha" class="form-control" type="password" autocomplete="new-password"
+               placeholder="@(edicao ? "em branco = manter a atual" : "")" />
+        <span asp-validation-for="Senha" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Emails" class="form-label"></label>
+        <input asp-for="Emails" class="form-control" placeholder="a@email.com, b@email.com" />
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Telefones" class="form-label"></label>
+        <input asp-for="Telefones" class="form-control" placeholder="99998888, 88889999" />
+    </div>
+</div>

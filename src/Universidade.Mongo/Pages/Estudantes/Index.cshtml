@@ -1,0 +1,57 @@
+@page
+@model Universidade.Mongo.Pages.Estudantes.IndexModel
+@{
+    ViewData["Title"] = "Estudantes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Estudantes</h1>
+    <a class="btn btn-primary" asp-page="Criar">+ Novo estudante</a>
+</div>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_ComandoPanel" model="Model.UltimoComando" />
+}
+
+<form method="get" class="d-flex gap-2 mb-3">
+    <input class="form-control" name="busca" value="@Model.Busca" placeholder="Buscar por matrícula ou CPF" />
+    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+    @if (!string.IsNullOrEmpty(Model.Busca))
+    {
+        <a class="btn btn-outline-secondary" asp-page="Index">Limpar</a>
+    }
+</form>
+
+<p class="text-muted">@Model.Estudantes.Count documento(s) em <code>db.estudantes</code></p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Matrícula (_id)</th>
+                <th>CPF (usuário)</th>
+                <th>MC</th>
+                <th>Ano ingresso</th>
+                <th>Planos</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model.Estudantes)
+            {
+                <tr class="@(e.MatEstudante == Model.Destaque ? "destaque" : "")">
+                    <td><code>@e.MatEstudante</code></td>
+                    <td>@e.Cpf</td>
+                    <td>@e.Mc</td>
+                    <td>@e.AnoIngresso</td>
+                    <td>@e.Planos.Count</td>
+                    <td class="text-nowrap">
+                        <a class="btn btn-sm btn-outline-primary" asp-page="Editar" asp-route-mat="@e.MatEstudante">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-page="Excluir" asp-route-mat="@e.MatEstudante">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

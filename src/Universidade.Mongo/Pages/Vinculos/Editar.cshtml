@@ -1,0 +1,27 @@
+@page "{id:int}"
+@model Universidade.Mongo.Pages.Vinculos.EditarModel
+@{
+    ViewData["Title"] = "Editar vínculo";
+}
+
+<h1 class="mb-3">Editar vínculo <code>@Model.Id</code></h1>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_ComandoPanel" model="Model.UltimoComando" />
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+    <partial name="_CamposVinculo" for="Form" view-data="ViewData" />
+
+    <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

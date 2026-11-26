@@ -1,0 +1,36 @@
+@model ComandoMongo
+@*
+    Mostra a operação MongoDB que foi enviada ao banco, o filtro/documento e o resultado.
+*@
+<div class="card mb-4 border-@(Model.Sucesso ? "success" : "danger")">
+    <div class="card-header d-flex justify-content-between @(Model.Sucesso ? "bg-success-subtle" : "bg-danger-subtle")">
+        <strong>db.@(Model.Colecao).@(Model.Operacao)(...)</strong>
+        <span class="text-muted small">@Model.Momento.ToString("HH:mm:ss")</span>
+    </div>
+    <div class="card-body">
+        @if (Model.Filtro is not null)
+        {
+            <p class="mb-1"><strong>Filtro:</strong></p>
+            <pre class="mongo mb-3">@Model.Filtro</pre>
+        }
+        @if (Model.Documento is not null)
+        {
+            <p class="mb-1"><strong>Documento:</strong></p>
+            <pre class="mongo mb-3">@Model.Documento</pre>
+        }
+
+        @if (Model.Sucesso)
+        {
+            <p class="mb-0"><strong>Documentos afetados:</strong> @Model.LinhasAfetadas</p>
+        }
+        else
+        {
+            <p class="mb-0 text-danger"><strong>Erro:</strong> @Model.Erro</p>
+        }
+
+        @if (Model.Observacao is not null)
+        {
+            <div class="alert alert-info mt-3 mb-0">@Model.Observacao</div>
+        }
+    </div>
+</div>

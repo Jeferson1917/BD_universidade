@@ -1,0 +1,33 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Início";
+    var colecoes = new[]
+    {
+        ("/Usuarios/Index", "Usuários", "usuarios"),
+        ("/Estudantes/Index", "Estudantes", "estudantes"),
+        ("/Cursos/Index", "Cursos", "cursos"),
+        ("/Vinculos/Index", "Vínculos", "vinculos"),
+    };
+}
+
+<h1 class="mb-4">CRUD — MongoDB (mapeamento do esquema universidade)</h1>
+
+<div class="row g-3 mb-4">
+    @foreach (var (pagina, titulo, colecao) in colecoes)
+    {
+        <div class="col-sm-6 col-lg-3">
+            <a class="card h-100 text-decoration-none" asp-page="@pagina">
+                <div class="card-body">
+                    <h5 class="card-title">@titulo</h5>
+                    <p class="card-text text-muted"><code>db.@colecao</code></p>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+<p class="text-muted">
+    Veja <code>docs/mapeamento-mongodb.md</code> na raiz do repositório para a explicação completa
+    do mapeamento de todas as tabelas do esquema relacional para as collections do MongoDB.
+</p>

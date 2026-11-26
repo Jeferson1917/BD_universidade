@@ -1,0 +1,40 @@
+@page "{mat}"
+@model Universidade.Mongo.Pages.Estudantes.ExcluirModel
+@{
+    ViewData["Title"] = "Excluir estudante";
+    var e = Model.Estudante!;
+}
+
+<h1 class="mb-3">Excluir estudante</h1>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Matrícula (_id)</dt>
+            <dd class="col-sm-9"><code>@e.MatEstudante</code></dd>
+            <dt class="col-sm-3">CPF</dt>
+            <dd class="col-sm-9">@e.Cpf</dd>
+            <dt class="col-sm-3">MC</dt>
+            <dd class="col-sm-9">@e.Mc</dd>
+            <dt class="col-sm-3">Ano ingresso</dt>
+            <dd class="col-sm-9">@e.AnoIngresso</dd>
+            <dt class="col-sm-3">Planos</dt>
+            <dd class="col-sm-9">@e.Planos.Count item(ns) embutido(s)</dd>
+        </dl>
+    </div>
+</div>
+
+@if (Model.Vinculos > 0)
+{
+    <div class="alert alert-warning">
+        <strong>Atenção:</strong> existem @Model.Vinculos vínculo(s) referenciando essa matrícula em
+        <code>db.vinculos</code>. Eles não são apagados nem atualizados automaticamente.
+    </div>
+}
+
+<pre class="mongo">db.estudantes.deleteOne({ _id: "@e.MatEstudante" })</pre>
+
+<form method="post" class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+</form>

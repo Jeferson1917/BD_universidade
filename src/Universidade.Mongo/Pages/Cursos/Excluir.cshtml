@@ -1,0 +1,42 @@
+@page "{id:int}"
+@model Universidade.Mongo.Pages.Cursos.ExcluirModel
+@{
+    ViewData["Title"] = "Excluir curso";
+    var c = Model.Curso!;
+}
+
+<h1 class="mb-3">Excluir curso</h1>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">_id</dt>
+            <dd class="col-sm-9"><code>@c.Id</code></dd>
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9">@c.Nome</dd>
+            <dt class="col-sm-3">Grau</dt>
+            <dd class="col-sm-9">@c.Grau</dd>
+            <dt class="col-sm-3">Turno</dt>
+            <dd class="col-sm-9">@c.Turno</dd>
+            <dt class="col-sm-3">Campus</dt>
+            <dd class="col-sm-9">@c.Campus</dd>
+            <dt class="col-sm-3">Nível</dt>
+            <dd class="col-sm-9">@c.Nivel</dd>
+        </dl>
+    </div>
+</div>
+
+@if (Model.Vinculos > 0)
+{
+    <div class="alert alert-warning">
+        <strong>Atenção:</strong> existem @Model.Vinculos vínculo(s) referenciando esse curso em
+        <code>db.vinculos</code>. Eles não são apagados nem atualizados automaticamente.
+    </div>
+}
+
+<pre class="mongo">db.cursos.deleteOne({ _id: @c.Id })</pre>
+
+<form method="post" class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+</form>

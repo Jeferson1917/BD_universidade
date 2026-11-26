@@ -1,0 +1,34 @@
+@page "{id:int}"
+@model Universidade.Mongo.Pages.Vinculos.ExcluirModel
+@{
+    ViewData["Title"] = "Excluir vínculo";
+    var v = Model.Vinculo!;
+}
+
+<h1 class="mb-3">Excluir vínculo</h1>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">_id</dt>
+            <dd class="col-sm-9"><code>@v.Id</code></dd>
+            <dt class="col-sm-3">Estudante</dt>
+            <dd class="col-sm-9">@v.MatEstudante</dd>
+            <dt class="col-sm-3">Curso</dt>
+            <dd class="col-sm-9">@v.Curso</dd>
+            <dt class="col-sm-3">Entrada</dt>
+            <dd class="col-sm-9">@v.DataEntrada?.ToString("dd/MM/yyyy")</dd>
+            <dt class="col-sm-3">Situação</dt>
+            <dd class="col-sm-9">@v.Status</dd>
+            <dt class="col-sm-3">Saída</dt>
+            <dd class="col-sm-9">@v.DataSaida?.ToString("dd/MM/yyyy")</dd>
+        </dl>
+    </div>
+</div>
+
+<pre class="mongo">db.vinculos.deleteOne({ _id: @v.Id })</pre>
+
+<form method="post" class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+</form>

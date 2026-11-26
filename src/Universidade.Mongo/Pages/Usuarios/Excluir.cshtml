@@ -1,0 +1,43 @@
+@page "{cpf}"
+@model Universidade.Mongo.Pages.Usuarios.ExcluirModel
+@{
+    ViewData["Title"] = "Excluir usuário";
+    var u = Model.Usuario!;
+}
+
+<h1 class="mb-3">Excluir usuário</h1>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">CPF (_id)</dt>
+            <dd class="col-sm-9"><code>@u.Cpf</code></dd>
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9">@u.Nome</dd>
+            <dt class="col-sm-3">Nascimento</dt>
+            <dd class="col-sm-9">@u.DataNascimento?.ToString("dd/MM/yyyy")</dd>
+            <dt class="col-sm-3">E-mails</dt>
+            <dd class="col-sm-9">@(u.Email is null ? "" : string.Join(", ", u.Email))</dd>
+            <dt class="col-sm-3">Telefones</dt>
+            <dd class="col-sm-9">@(u.Telefone is null ? "" : string.Join(", ", u.Telefone))</dd>
+            <dt class="col-sm-3">Login</dt>
+            <dd class="col-sm-9">@u.Login</dd>
+        </dl>
+    </div>
+</div>
+
+@if (Model.MatEstudante is not null)
+{
+    <div class="alert alert-warning">
+        <strong>Atenção:</strong> o estudante <code>@Model.MatEstudante</code> referencia este CPF.
+        Como o MongoDB não impõe integridade referencial, ele vai continuar com <code>cpf</code>
+        apontando para um documento que não existe mais.
+    </div>
+}
+
+<pre class="mongo">db.usuarios.deleteOne({ _id: "@u.Cpf" })</pre>
+
+<form method="post" class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger">Confirmar exclusão</button>
+    <a class="btn btn-outline-secondary" asp-page="Index">Cancelar</a>
+</form>

@@ -1,0 +1,50 @@
+@page
+@model Universidade.Mongo.Pages.Vinculos.IndexModel
+@{
+    ViewData["Title"] = "Vínculos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Vínculos</h1>
+    <a class="btn btn-primary" asp-page="Criar">+ Novo vínculo</a>
+</div>
+
+@if (Model.UltimoComando is not null)
+{
+    <partial name="_ComandoPanel" model="Model.UltimoComando" />
+}
+
+<p class="text-muted">@Model.Vinculos.Count documento(s) em <code>db.vinculos</code></p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>_id</th>
+                <th>Estudante</th>
+                <th>Curso</th>
+                <th>Entrada</th>
+                <th>Situação</th>
+                <th>Saída</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var v in Model.Vinculos)
+            {
+                <tr class="@(v.Id.ToString() == Model.Destaque ? "destaque" : "")">
+                    <td><code>@v.Id</code></td>
+                    <td>@v.MatEstudante</td>
+                    <td>@v.Curso</td>
+                    <td>@v.DataEntrada?.ToString("dd/MM/yyyy")</td>
+                    <td>@v.Status</td>
+                    <td>@v.DataSaida?.ToString("dd/MM/yyyy")</td>
+                    <td class="text-nowrap">
+                        <a class="btn btn-sm btn-outline-primary" asp-page="Editar" asp-route-id="@v.Id">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-page="Excluir" asp-route-id="@v.Id">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
