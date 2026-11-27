@@ -73,5 +73,6 @@ Abre em `http://localhost:5086` (ou `https://localhost:7242`).
 - `mongo/schema.js`: cria as collections do MongoDB com validadores de schema (`$jsonSchema`) e índices.
 - `mongo/seed.js`: popula o MongoDB com os mesmos dados do `universidade.sql`, já no formato mapeado.
 - `docs/mapeamento-mongodb.md`: relatório do mapeamento relacional para o MongoDB.
+- `dw/schema_estrela.sql`: esquema estrela do data warehouse da Parte 3 (dimensões, fato e membros "Não informado").
 - `src/Universidade.Web`: Parte 1 (PostgreSQL via Npgsql).
 - `src/Universidade.Mongo`: Parte 2 (MongoDB via MongoDB.Driver).
