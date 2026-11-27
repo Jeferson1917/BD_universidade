@@ -484,4 +484,4 @@ $RECYCLE.BIN/
 *.swp
 
 # Apache Hop - conexoes de banco (guardam senha em formato reversivel)
-dw/metadata/rdbms/
+dw/metadata/
